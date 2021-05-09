@@ -22,4 +22,4 @@ vendor/
 /src/.env
 
 # docker directories
-data/
+./data/

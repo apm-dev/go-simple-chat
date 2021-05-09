@@ -4,7 +4,6 @@ import (
 	"apm.dev/go-simple-chat/src/domain"
 	"apm.dev/go-simple-chat/src/pkg/logger"
 	"github.com/pkg/errors"
-	"golang.org/x/crypto/bcrypt"
 )
 
 type Service interface {
@@ -55,7 +54,7 @@ func (svc *service) Login(email, pass string) (string, error) {
 		return "", domain.ErrInternalServer
 	}
 	// check password
-	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(pass)); err != nil {
+	if !user.IsCorrectPassword(pass) {
 		logger.Info(errors.Wrap(domain.ErrWrongCredentials, user.Email))
 		return "", domain.ErrWrongCredentials
 	}

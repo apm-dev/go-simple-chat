@@ -26,3 +26,17 @@ func NewUser(name, email, pass string) (*User, error) {
 		Password: string(hash),
 	}, nil
 }
+
+func (user *User) IsCorrectPassword(password string) bool {
+	err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
+	return err == nil
+}
+
+func (user *User) Clone() *User {
+	return &User{
+		ID:       user.ID,
+		Name:     user.Name,
+		Email:    user.Email,
+		Password: user.Password,
+	}
+}
